@@ -23,13 +23,20 @@ class _PepperoniBottomBarState extends State<PepperoniBottomBar> {
       items: List.from(
         widget.items.map(
           (el) => BottomNavigationBarItem(
-            icon: Icon(el.icon),
+            icon: PepperoniIconBar(
+              icon: el.icon,
+              countBadge: el.countBadge,
+            ),
             label: el.label,
+            activeIcon: PepperoniIconBar(
+              icon: el.activeIcon,
+              countBadge: el.countBadge,
+            ),
           ),
         ),
       ),
-      fixedColor: Colors.red,
-      unselectedItemColor: Colors.black45,
+      selectedItemColor: Colors.black87,
+      unselectedItemColor: Colors.black38,
       showUnselectedLabels: true,
       currentIndex: selectedItem,
       onTap: (value) {
@@ -39,5 +46,43 @@ class _PepperoniBottomBarState extends State<PepperoniBottomBar> {
         });
       },
     );
+  }
+}
+
+class PepperoniIconBar extends StatelessWidget {
+  final IconData icon;
+  final int countBadge;
+  const PepperoniIconBar({
+    super.key,
+    required this.icon,
+    required this.countBadge,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    if (countBadge > 0) {
+      return Stack(
+        clipBehavior: Clip.none,
+        children: [
+          Icon(icon),
+          Positioned(
+            left: -5,
+            top: -5,
+            child: CircleAvatar(
+              backgroundColor: Colors.red,
+              radius: 8,
+              child: Text(
+                "$countBadge",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 10,
+                ),
+              ),
+            ),
+          ),
+        ],
+      );
+    }
+    return Icon(icon);
   }
 }
